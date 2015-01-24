@@ -6,7 +6,7 @@ output: html_document
 ---
 
 
-### Data Cleaning Process ### 
+###Data Cleaning Process###
 The code is broken down into multipe sections
 
  * Load static data
