@@ -35,7 +35,8 @@ merge_UCIHAR <- function(subjectTable,activityTable,dataTable) {
 }
 
 
-run_analysis <- function(wd,tidydata) {
+run_analysis <- function(tidydata,wd=".") {
+  # default working directory is current directory, else go to working directory
   setwd(wd)
   
   # 01 Merges the training and the test sets to create one data set.
@@ -83,9 +84,10 @@ run_analysis <- function(wd,tidydata) {
   # Created named vector for use in rename
   names(cleanDotsV)=nV
   df <- rename(df,cleanDotsV)
-  write.table(df,tidydata,row.name=FALSE)
-  # 05 From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.  
   
-  # df
+  
+  # 05 From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.  
+  mean_df <- ddply(df,.(ActivityName,SubjectID),colwise(mean))
+  write.table(mean_df,tidydata,row.name=FALSE)
+  mean_df
 }
-
