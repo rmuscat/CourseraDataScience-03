@@ -73,9 +73,8 @@ run_analysis <- function(tidydata,wd=".") {
   # Replace X for C meaning Column no in the original dataset
   
   # Created named vector for use in rename
-  names(df) <- gsub("[.]+",".",tolower(colnames(df))) # lowercase, remove dup dots
-  names(df) <- gsub("[.]$","",colnames(df)) # no dots at the end
-  names(df) <- sub("^[x]","C",colnames(df)) # replace X with C
+  names(df) <- sub("^[X]\\d+\\.","",colnames(df)) # remove column number
+  names(df) <- gsub("[.]","",tolower(colnames(df))) # lowercase, remove all dots
   #df <- rename(df,cleanCols)
   
   
