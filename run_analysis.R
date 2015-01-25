@@ -72,22 +72,15 @@ run_analysis <- function(tidydata,wd=".") {
   # Remove all redundant "." separators and keep one so the columns are readable
   # Replace X for C meaning Column no in the original dataset
   
-  nV <- vector() # intialise to empty
-  cleanDotsV <- vector() # initalise empty
-  for (n in colnames(df)) {
-    cleanDots <- gsub("[.]+",".",n) # remove dup dots
-    cleanDots <- gsub("[.]$","",cleanDots) # no dots at the end
-    cleanDots <- sub("^X","C",cleanDots) # no dots at the end
-    nV <- c(nV,n)
-    cleanDotsV <- c(cleanDotsV,cleanDots)
-  }
   # Created named vector for use in rename
-  names(cleanDotsV)=nV
-  df <- rename(df,cleanDotsV)
+  names(df) <- gsub("[.]+",".",tolower(colnames(df))) # lowercase, remove dup dots
+  names(df) <- gsub("[.]$","",colnames(df)) # no dots at the end
+  names(df) <- sub("^[x]","C",colnames(df)) # replace X with C
+  #df <- rename(df,cleanCols)
   
   
   # 05 From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.  
-  mean_df <- ddply(df,.(ActivityName,SubjectID),colwise(mean))
+  mean_df <- ddply(df,.(activityname,subjectid),colwise(mean))
   write.table(mean_df,tidydata,row.name=FALSE)
   mean_df
 }
